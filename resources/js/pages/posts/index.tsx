@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 
 import AppLayout from '../../layouts/app-layout';
 import { Post } from '../../types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface PostIndexProps {
     posts: Post[]
@@ -10,29 +11,41 @@ interface PostIndexProps {
 
 export default function PostIndex({ posts }: PostIndexProps) {
 
-    let content = <div className="text-center py-8">
-                        <p className="text-gray-500">No posts found.</p>
-                    </div>;
+    let content = <Card>
+                    <CardContent className="flex items-center justify-center py-12">
+                        <p className="text-muted-foreground">
+                            No posts found.
+                        </p>
+                    </CardContent>
+                </Card>;
+                
 
     if (posts.length > 0) { 
         content = (
             <>
                 {posts.map((post: Post) => (
-                    <article
+                    <Card
                         key={post.id}
-                        className="border-b border-gray-200 pb-6 last:border-b-0"
+                        className="transition-colors hover:bg-muted/50 rounded-none border-b-0 last:border-b"
                     >
-                        <h2 className="text-xl font-semibold mb-2">
-                            <Link href={`/posts/${post.id}`}>
-                                {post.title}
-                            </Link>
-                        </h2>
-                        <p className="text-sm text-gray-500 mb-2">By {post.user.name}</p>
-                        <p className="text-gray-600">
-                            {post.body.substring(0, 100)}
-                            {post.body.length > 100 && "..."}
-                        </p>
-                    </article>
+                        <CardHeader className="text-xl" >
+                            <CardTitle >
+                                <Link href={`/posts/${post.id}`}>
+                                    {post.title}
+                                </Link>
+                            </CardTitle>
+                            <CardDescription>
+                                By {post.user.name}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            {/* <p className="text-muted-foreground"> */}
+                                {post.body.substring(0, 100)}
+                                {post.body.length > 100 && "..."}
+                            {/* </p> */}
+                        </CardContent>
+                        
+                    </Card>
                 ))}
             </>
         );

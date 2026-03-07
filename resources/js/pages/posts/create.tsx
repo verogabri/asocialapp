@@ -4,6 +4,12 @@ import { Form } from '@inertiajs/react';
 import AppLayout from '../../layouts/app-layout';
 // import { Post } from '../../types';
 import { cn } from '../../lib/utils';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { InputError } from '@/components/ui/input-error';
 
 
 export default function PostCreate() {
@@ -11,64 +17,60 @@ export default function PostCreate() {
     
     return (
         <AppLayout>
-            <div className="space-y-6">
-                <h1 className="text-2xl font-bold text-gray-900">Create Post</h1>
-                <div>
+            <Card>
+                <CardHeader>
+                    <CardTitle >Create Post</CardTitle>
+                    <CardDescription>Create a new post by filling out the form below.</CardDescription>
+                </CardHeader>
+                <CardContent>
+
                     <Form method="post" action="/posts">
                         {({ errors }) => (
                             <>
-                                <div>
-                                    <label htmlFor="title" className="block mb-1">
+                                <div className="mt-4 mb-4">
+                                    <Label
+                                        htmlFor="title" 
+                                        className="mb-2"
+                                    >
                                         Title
-                                    </label>
-                                    <input
+                                    </Label>
+                                    <Input
                                         id="title"
                                         name="title"
                                         type="text"
-                                        className={cn(
-                                            "w-full border rounded px-3 py-2",
-                                            errors.title && "border-red-500"
-                                        )}
+                                        aria-invalid={!!errors.title}
+                                        className='rounded-none'
                                     />
-                                    {errors.title && (
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {errors.title}
-                                        </p>
-                                    )}
+                                    <InputError message={errors.title} className="mt-1" />
                                 </div>
-                                <div>
-                                    <label htmlFor="body" className="block mb-1">
+
+                                <div className="mt-4 mb-4">
+                                    <Label htmlFor="body" className="mb-2">
                                         Body
-                                    </label>
-                                    <textarea
+                                    </Label>
+                                    <Textarea
                                         id="body"
                                         name="body"
-                                        className={cn(
-                                            "w-full border rounded px-3 py-2",
-                                            errors.body && "border-red-500"
-                                        )}
+                                        aria-invalid={!!errors.body}
+                                        className='rounded-none'
                                     />
-                                    {errors.body && (
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {errors.body}
-                                        </p>
-                                    )}
+                                    <InputError message={errors.body} className="mt-1" />
                                 </div>
-                                <div>
-                                <button
-                                    type="submit"
-                                    className="bg-blue-600 text-white px-4 py-2 rounded"
-                                >
-                                    Create
-                                </button>
+
+                                <div className="mt-4 mb-4 flex flex-row justify-between">
+                                    <Button>
+                                        CREATE
+                                    </Button>
+                                    <Button>
+                                        <a href="/posts" className="text-white">Back</a>
+                                    </Button>
                                 </div>
                             </>
                         )}
                     </Form>
 
-                </div>
-            </div>
-
+                </CardContent>
+            </Card>
         </AppLayout>
     );
 }
