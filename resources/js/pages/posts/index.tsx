@@ -27,6 +27,7 @@ export default function PostIndex({ posts }: PostIndexProps) {
                                 {post.title}
                             </Link>
                         </h2>
+                        <p className="text-sm text-gray-500 mb-2">By {post.user.name}</p>
                         <p className="text-gray-600">
                             {post.body.substring(0, 100)}
                             {post.body.length > 100 && "..."}

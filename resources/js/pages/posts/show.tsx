@@ -14,6 +14,7 @@ export default function PostShow({ post }: PostShowProps) {
         <AppLayout>
             <div className="flex flex-col items-center justify-center h-screen">
                 <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+                <p className="text-sm text-gray-500 mb-2">By {post.user.name}</p>
                 <p className="text-lg text-gray-600">{post.body}</p>
                 
             </div>
