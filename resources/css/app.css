@@ -9,3 +9,11 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* trucchetto per evidenziare tutti i blocchi 
+* {
+    border: 1px solid blue;
+    background-color: rgba(9, 13, 235, 0.1);
+}
+    
+/* */
