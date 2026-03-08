@@ -1,6 +1,7 @@
 import { ReactNode} from 'react';  
 
 import AppHeader from '../components/header/app-header';    
+import { Toaster } from '@/components/ui/sonner';
 
 interface AppLayoutProps {  
     children: ReactNode;
@@ -17,6 +18,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                     {children}
                 </div>
             </main>
+            <Toaster />
+            
         </div>
     );
 }

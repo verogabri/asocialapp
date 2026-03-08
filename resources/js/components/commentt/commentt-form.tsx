@@ -14,9 +14,18 @@ import { Input } from "@/components/ui/input";
 
 interface CommentFormProps {
     postId: number;
+    onSuccess? : () => void;
 }
 
-export default function CommentForm({ postId }: CommentFormProps) {
+export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
+
+    const handleOnSuccess = () => {
+        if(onSuccess){
+            onSuccess();
+        }
+    }
+
+
     return (
         <Card className="rounded-none">
             <CardHeader>
@@ -26,8 +35,17 @@ export default function CommentForm({ postId }: CommentFormProps) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <Form action="/commentts" method="post" className="space-y-4">
-                    {({ errors }) => (
+                <Form 
+                    action="/commentts" 
+                    method="post" 
+                    className="space-y-4"
+                    resetOnSuccess
+                    onSuccess={handleOnSuccess}
+                    options={{
+                        only: ['commentts']
+                    }}
+                >
+                    {({ errors, processing }) => (
                         <>
                             <Input
                                 type="hidden"
@@ -43,7 +61,10 @@ export default function CommentForm({ postId }: CommentFormProps) {
                                 />
                                 <InputError message={errors.body} />
                             </div>
-                            <Button>Add Comment</Button>
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                            >{processing ? 'Adding...' : 'Add comment'}</Button>
                         </>
                     )}
                 </Form>

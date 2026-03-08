@@ -1,18 +1,39 @@
 
-import { Link } from '@inertiajs/react';
+import React from 'react';
+import { Deferred, Link } from '@inertiajs/react';
 
 import AppLayout from '../../layouts/app-layout';
-import { Post } from '../../types';
+import { Commentt, Post } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CommentForm from '@/components/commentt/commentt-form';
 import CommenttCard from '@/components/commentt/commentt-card';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 
 interface PostShowProps {
-    post: Post;
+    post: Post,
+    commentts: Commentt[]; // Aggiungi questa riga per definire il tipo di commentts
 }
 
-export default function PostShow({ post }: PostShowProps) {
+export default function PostShow({ post, commentts }: PostShowProps) {
+
+    const commenttsSectionRef = React.useRef<HTMLDivElement>(null);
+
+    const handleOnSuccess = () => {
+
+        toast.success("Commentts has beeen added successfully!!", {
+            description: "Commentts has beeen added successfully!!",
+            position: "top-center" 
+        })
+        
+        // Scrolla alla sezione dei commentts dopo che un nuovo commento è stato aggiunto
+        if (commenttsSectionRef.current) {
+            commenttsSectionRef.current.scrollIntoView({ behavior: 'smooth', block:'start' });
+        }
+    }
+
+
     return (
         <AppLayout>
             <div className="space-y-6">
@@ -32,31 +53,42 @@ export default function PostShow({ post }: PostShowProps) {
                     </CardContent>
                 </Card>
                 
+                    
                 {/* Comment Form */}
-                <CommentForm postId={post.id} />
+                <CommentForm 
+                    postId={post.id}
+                    onSuccess={handleOnSuccess}
+                />
 
                 {/* Comments Section */}
                 
+                <div ref={commenttsSectionRef}>
+                <Deferred
+                    data="commentts"
+                    fallback={
+                        <div><p>Loading commentts ... </p></div>
+                    }
+                >
+                    <div className="space-y-4">
+                        {commentts && commentts.length > 0 ? (
+                            <div>
+                                
+                                {commentts.map((commentt) => (
+                                    <CommenttCard
+                                        key={commentt.id}
+                                        commentt={commentt}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">
+                                <p className="text-gray-500">No comments yet.</p>
+                            </div>
+                        )}
+                    </div>
 
-                <div className="space-y-4">
-                    {post.commentts && post.commentts.length > 0 ? (
-                        <div>
-                            
-                            {post.commentts.map((commentt) => (
-                                <CommenttCard
-                                    key={commentt.id}
-                                    commentt={commentt}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-8">
-                            <p className="text-gray-500">No comments yet.</p>
-                        </div>
-                    )}
+                </Deferred>
                 </div>
-
-                {/* <CommentForm postId={post.id} /> */}
 
             </div>
             <div>
