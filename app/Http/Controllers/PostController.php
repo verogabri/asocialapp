@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commentt;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,8 +25,14 @@ class PostController extends Controller
 
     public function show(string $id) : Response
     {
-        $post = Post::with('user')->findOrFail($id);
-        return inertia('posts/show', ['post' => $post]);
+        // $post = Post::with('user')->findOrFail($id);
+        $posts = Post::with([
+            'user',
+            'commentts' => fn($query) => $query->with('user')->latest()           
+        ])->findOrFail($id);
+
+        // dd($posts);
+        return inertia('posts/show', ['post' => $posts]);
 
     }
 

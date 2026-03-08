@@ -3,7 +3,7 @@ import { Form } from '@inertiajs/react';
 
 import AppLayout from '../../layouts/app-layout';
 // import { Post } from '../../types';
-import { cn } from '../../lib/utils';
+// import { cn } from '../../lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

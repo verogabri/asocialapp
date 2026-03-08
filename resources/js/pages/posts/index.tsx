@@ -29,13 +29,14 @@ export default function PostIndex({ posts }: PostIndexProps) {
                         className="transition-colors hover:bg-muted/50 rounded-none border-b-0 last:border-b"
                     >
                         <CardHeader className="text-xl" >
-                            <CardTitle >
+                            <CardTitle className='text-2xl'>
                                 <Link href={`/posts/${post.id}`}>
                                     {post.title}
                                 </Link>
                             </CardTitle>
                             <CardDescription>
-                                By {post.user.name}
+                                By {post.user?.name} on{" "} 
+                                {new Date(post.created_at).toLocaleDateString()}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
