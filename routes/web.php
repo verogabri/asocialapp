@@ -23,5 +23,5 @@ Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::post('/commentts', [CommenttController::class, 'store'])->name('commentts.store');
 
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::post('/posts/{id}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle');
+Route::post('/posts/{post}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle');
 

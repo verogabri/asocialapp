@@ -2,7 +2,8 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import wayfinder from 'wayfinder';
+// import wayfinder from 'wayfinder';  // ❌ Pacchetto non installato
+import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 
 
 export default defineConfig({

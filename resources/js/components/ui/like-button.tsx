@@ -45,7 +45,7 @@ export default function LikeButton({
         if (disabled) return;
 
         router.post(
-            PostToggleLike(postId),
+            PostToggleLike.__invoke(postId).url,
             {},
             {
                 onStart: () => setIsLoading(true),
