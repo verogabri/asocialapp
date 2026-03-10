@@ -1,12 +1,13 @@
 
-import React from 'react';
-import { Deferred, Link } from '@inertiajs/react';
+import React, { useEffect, useRef } from 'react';
+import { Deferred, Link, usePoll } from '@inertiajs/react';
 
 import AppLayout from '../../layouts/app-layout';
 import { Commentt, Post } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CommentForm from '@/components/commentt/commentt-form';
 import CommenttCard from '@/components/commentt/commentt-card';
+import CommenttList from '@/components/commentt/commentt-list';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
@@ -20,7 +21,48 @@ export default function PostShow({ post, commentts }: PostShowProps) {
 
     const commenttsSectionRef = React.useRef<HTMLDivElement>(null);
 
+    const commenttsCount = useRef(commentts?.length ? commentts.length : 0);
+    const writingCommentt = useRef(false);
+
+
+    useEffect(() => {
+        // Aggiorna il conteggio dei commenti quando commentts cambia
+        let commentsCountValue = commentts ? commentts.length : 0;
+
+        console.log("Commentts updated, new count: writingCommentt.current ", writingCommentt.current);
+
+        if(commentsCountValue > commenttsCount.current && commenttsCount.current !== 0 && writingCommentt.current) {
+            toast.success("New commentts has been added!!", {
+                description: "New commentts has been added!!",
+                position: "top-center",
+                duration: 8000,
+                action: {
+                    label: "View",
+                    onClick: scrollToCommenttsSection
+                }
+            })
+
+            writingCommentt.current = false;
+        }
+
+       
+        commenttsCount.current = commentsCountValue
+
+        console.log("Commentts updated, current count:", commenttsCount.current);
+
+    }, [commentts]);
+
+
+    usePoll( 5000, {
+        only: ['commentts'],
+        onFinish: (response) => {
+            // Puoi gestire la risposta qui se necessario
+            console.log("Polling completed, commentts updated:", response);
+        }
+    })
+
     const handleOnSuccess = () => {
+        writingCommentt.current = true;
 
         toast.success("Commentts has beeen added successfully!!", {
             description: "Commentts has beeen added successfully!!",
@@ -28,10 +70,15 @@ export default function PostShow({ post, commentts }: PostShowProps) {
         })
         
         // Scrolla alla sezione dei commentts dopo che un nuovo commento è stato aggiunto
+        scrollToCommenttsSection();
+    }
+
+    const scrollToCommenttsSection = () => {
         if (commenttsSectionRef.current) {
             commenttsSectionRef.current.scrollIntoView({ behavior: 'smooth', block:'start' });
         }
     }
+
 
 
     return (
@@ -66,27 +113,14 @@ export default function PostShow({ post, commentts }: PostShowProps) {
                 <Deferred
                     data="commentts"
                     fallback={
-                        <div><p>Loading commentts ... </p></div>
+                        <>
+                        {/* <div><p>Loading commentts ... </p></div> */}
+                        <CommenttList commentts={commentts} />
+                        </>
                     }
                 >
-                    <div className="space-y-4">
-                        {commentts && commentts.length > 0 ? (
-                            <div>
-                                
-                                {commentts.map((commentt) => (
-                                    <CommenttCard
-                                        key={commentt.id}
-                                        commentt={commentt}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="text-center py-8">
-                                <p className="text-gray-500">No comments yet.</p>
-                            </div>
-                        )}
-                    </div>
-
+                    <CommenttList commentts={commentts} />
+                
                 </Deferred>
                 </div>
 
