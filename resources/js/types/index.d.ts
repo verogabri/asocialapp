@@ -7,6 +7,7 @@ export interface User {
     updated_at: string;
     posts?: Post[];
     commentts?: Commentt[];
+    
 };
 
 export interface Post {
@@ -18,6 +19,8 @@ export interface Post {
     user_id: number;
     user?: User;
     commentts?: Commentt[];
+    likes?: Like[];
+    likes_count?: number
 }
 
 export interface Commentt {
@@ -29,4 +32,9 @@ export interface Commentt {
     post_id: number;
     user: User;
     post: Post;
+}
+
+export interface PostLikesData {
+    count: number;
+    user_has_liked: boolean;
 }

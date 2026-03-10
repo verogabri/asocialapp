@@ -10,6 +10,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Form } from "@inertiajs/react";
 import { Input } from "@/components/ui/input";
+import { store } from '@/actions/App/Http/Controllers/CommenttController';
 
 
 interface CommentFormProps {
@@ -36,8 +37,7 @@ export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
             </CardHeader>
             <CardContent>
                 <Form 
-                    action="/commentts" 
-                    method="post" 
+                    action={store()}
                     className="space-y-4"
                     resetOnSuccess
                     onSuccess={handleOnSuccess}

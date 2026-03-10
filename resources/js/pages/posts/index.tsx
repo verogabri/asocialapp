@@ -4,6 +4,8 @@ import { Link } from '@inertiajs/react';
 import AppLayout from '../../layouts/app-layout';
 import { Post } from '../../types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { show } from "@/actions/App/Http/Controllers/PostController";
+import { Heart } from 'lucide-react';
 
 interface PostIndexProps {
     posts: Post[]
@@ -30,7 +32,8 @@ export default function PostIndex({ posts }: PostIndexProps) {
                     >
                         <CardHeader className="text-xl" >
                             <CardTitle className='text-2xl'>
-                                <Link href={`/posts/${post.id}`}>
+                                {/* <Link href={`/posts/${post.id}`}> */}
+                                <Link href={show(post.id).url}>
                                     {post.title}
                                 </Link>
                             </CardTitle>
@@ -39,11 +42,17 @@ export default function PostIndex({ posts }: PostIndexProps) {
                                 {new Date(post.created_at).toLocaleDateString()}
                             </CardDescription>
                         </CardHeader>
-                        <CardContent>
-                            {/* <p className="text-muted-foreground"> */}
+                        <CardContent className="space-y-4">
+                            <p className="text-muted-foreground">
                                 {post.body.substring(0, 100)}
                                 {post.body.length > 100 && "..."}
-                            {/* </p> */}
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <Heart size={16} className="text-gray-400" />
+                                <span>
+                                    {post.likes_count ?? 0} likes
+                                </span>
+                            </div>
                         </CardContent>
                         
                     </Card>

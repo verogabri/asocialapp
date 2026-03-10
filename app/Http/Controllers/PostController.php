@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
+
 class PostController extends Controller
 {
 
@@ -19,7 +20,8 @@ class PostController extends Controller
     public function index() : Response
     {
         // $posts = Post::all();
-        $posts = Post::with('user')->latest()->get();
+        $posts = Post::with('user')->withCount('likes')->latest()->get();
+        
         return Inertia::render('posts/index', ['posts' => $posts]);
     }
 
@@ -54,7 +56,14 @@ class PostController extends Controller
                     ->where('post_id', $id)
                     ->latest()
                     ->get()
-            )
+            ),
+            'likes' => Inertia::defer(
+                fn() => [
+                    'count' => $post->likes()->count(),
+                    // 'user_has_liked' => $post->likes()->where('ip_address', request()->ip())->where('user_agent', request()->userAgent())->exists()
+                    'user_has_liked' => $post->likes()->where(['ip_address' => request()->ip(), 'user_agent' => request()->userAgent()])->exists()
+                ]
+            )   
         ]);
     }
 
@@ -77,6 +86,6 @@ class PostController extends Controller
             'user_id' => User::inRandomOrder()->first()->id // soluzione temporanea per assegnare un user_id valido, in attesa di implementare l'autenticazione
         ]);
 
-        return redirect('/posts');
+        return redirect()->route('posts.index');
     }
 }

@@ -3,6 +3,10 @@ import AppHeaderLink from "./app-header-link";
 import AppHeaderLogo from "./app-header-logo";
 import { Button } from "../ui/button";
 
+import { create, index } from "@/actions/App/Http/Controllers/PostController";
+import home from "@/routes/home";
+import about from "@/routes/about";
+
 export default function AppHeader() {
     return (
         <header>
@@ -12,11 +16,11 @@ export default function AppHeader() {
                     <nav>
                         <div className="flex space-x-6 items-center">                            
                             <Button size="sm" >
-                                <Link href="/posts/create" className="btn btn-primary">New Post</Link>
+                                <Link href={create()} className="btn btn-primary">New Post</Link>
                             </Button>
-                            <AppHeaderLink href="/">Home</AppHeaderLink>
-                            <AppHeaderLink href="/about">About</AppHeaderLink>
-                            <AppHeaderLink href="/posts">Posts</AppHeaderLink>
+                            <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
+                            <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
+                            <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
                         </div>
                     </nav>
                 </div>

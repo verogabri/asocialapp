@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { InputError } from '@/components/ui/input-error';
+import { store } from '@/actions/App/Http/Controllers/PostController';
 
 
 export default function PostCreate() {
@@ -24,7 +25,7 @@ export default function PostCreate() {
                 </CardHeader>
                 <CardContent>
 
-                    <Form method="post" action="/posts">
+                    <Form action={store()} >
                         {({ errors }) => (
                             <>
                                 <div className="mt-4 mb-4">
