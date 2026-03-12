@@ -21,6 +21,7 @@ export default function AppHeader() {
                             <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
                             <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
                             <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
+                            <AppHeaderLink href={'auth/login'}>Login</AppHeaderLink>
                         </div>
                     </nav>
                 </div>

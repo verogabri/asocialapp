@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostToggleLike;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+
 
 
 Route::get('/', function () {
@@ -15,6 +18,16 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return Inertia::render('about');
 })->name('about.index');
+
+
+
+Route::get('/auth/register', [RegisterController::class, 'create'])->name('auth.register.create');
+Route::post('/auth/register', [RegisterController::class, 'store'])->name('auth.register.store');
+
+Route::get('/auth/login', [LoginController::class, 'create'])->name('auth.login.create');
+Route::post('/auth/login', [LoginController::class, 'store'])->name('auth.login.store');
+Route::post('/auth/logout', [LoginController::class, 'destroy'])->name('auth.logout');
+
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
