@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import AppHeaderLink from "./app-header-link";
 import AppHeaderLogo from "./app-header-logo";
 import { Button } from "../ui/button";
@@ -6,8 +6,12 @@ import { Button } from "../ui/button";
 import { create, index } from "@/actions/App/Http/Controllers/PostController";
 import home from "@/routes/home";
 import about from "@/routes/about";
+import { PageProps } from "@/types";
+import AppHeaderUserMenu from "./app-headerUserMenu";
 
 export default function AppHeader() {
+
+    const { user } = usePage<PageProps>().props;
     return (
         <header>
             <div className="max-w-4xl mx-auto px-4 py-4">
@@ -21,7 +25,12 @@ export default function AppHeader() {
                             <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
                             <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
                             <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
-                            <AppHeaderLink href={'auth/login'}>Login</AppHeaderLink>
+                            
+                            {user ? (
+                                <AppHeaderUserMenu />
+                            ) : (
+                                <AppHeaderLink href={'auth/login'}>Login</AppHeaderLink>
+                            )}
                         </div>
                     </nav>
                 </div>

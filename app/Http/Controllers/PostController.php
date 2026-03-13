@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Resources\UserResource;
 
 
 class PostController extends Controller
@@ -21,6 +22,14 @@ class PostController extends Controller
     {
         // $posts = Post::all();
         $posts = Post::with('user')->withCount('likes')->latest()->get();
+       
+        // nn so se è il modo migliore
+        // ma funziona
+        // sostituisco ogni post con un array che contiene i dati del post e i dati dell'utente che ha scritto il post, trasformati in UserResource
+        $posts = $posts->map(fn($post) => [
+            ...$post->toArray(),
+            'user' => new UserResource($post->user)
+        ]);
         
         return Inertia::render('posts/index', ['posts' => $posts]);
     }
@@ -83,7 +92,8 @@ class PostController extends Controller
         
         Post::create([
             ...$validated,
-            'user_id' => User::inRandomOrder()->first()->id // soluzione temporanea per assegnare un user_id valido, in attesa di implementare l'autenticazione
+            // 'user_id' => User::inRandomOrder()->first()->id // soluzione temporanea per assegnare un user_id valido, in attesa di implementare l'autenticazione
+            'user_id' => $request->user()->id // in questo modo prendo l'id dell'utente loggato, che è quello che ha scritto il post
         ]);
 
         return redirect()->route('posts.index');

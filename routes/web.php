@@ -26,7 +26,7 @@ Route::post('/auth/register', [RegisterController::class, 'store'])->name('auth.
 
 Route::get('/auth/login', [LoginController::class, 'create'])->name('auth.login.create');
 Route::post('/auth/login', [LoginController::class, 'store'])->name('auth.login.store');
-Route::post('/auth/logout', [LoginController::class, 'destroy'])->name('auth.logout');
+Route::delete('/auth/logout', [LoginController::class, 'destroy'])->name('auth.logout');
 
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');

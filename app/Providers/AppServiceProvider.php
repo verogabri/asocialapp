@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,5 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        // tolgo il wrapping del json response, in questo modo quando ritorno un UserResource, invece di avere una struttura del tipo { "data": { "id": 1, "name": "John", "email": "
+        JsonResource::withoutWrapping();
     }
 }

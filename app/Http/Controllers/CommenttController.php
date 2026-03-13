@@ -36,7 +36,8 @@ class CommenttController extends Controller
         $validated = $request->validated();
         Commentt::create([
             ...$validated,
-            'user_id' => User::inRandomOrder()->first()->id, // soluzione temporanea per assegnare un user_id valido, in attesa di implementare l'autenticazione
+            // 'user_id' => User::inRandomOrder()->first()->id, // soluzione temporanea per assegnare un user_id valido, in attesa di implementare l'autenticazione
+            'user_id' => $request->user()->id, // in questo modo prendo l'id dell'utente loggato, che è quello che ha scritto il commento
         ]);
 
         return redirect()->back();

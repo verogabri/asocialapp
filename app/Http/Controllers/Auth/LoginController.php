@@ -92,8 +92,16 @@ class LoginController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request ) : RedirectResponse
     {
         //
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // return redirect()->route('home');
+        // return Inertia::render('home');
+        return redirect('/');
+
     }
 }

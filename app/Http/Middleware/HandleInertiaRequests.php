@@ -38,6 +38,11 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             //
+            // logged user information
+            // 'user' => $request->user(),
+
+            // invece di user, uso quelli di user trasformati in UserResource, in questo modo posso decidere quali campi del user voglio condividere con il client
+            'user' => $request->user()?->toResource(),
         ];
     }
 }
