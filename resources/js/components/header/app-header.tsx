@@ -9,6 +9,7 @@ import about from "@/routes/about";
 import { PageProps } from "@/types";
 import AppHeaderUserMenu from "./app-headerUserMenu";
 
+
 export default function AppHeader() {
 
     const { user } = usePage<PageProps>().props;
@@ -24,12 +25,12 @@ export default function AppHeader() {
                             </Button>
                             <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
                             <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
-                            <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
+                            <AppHeaderLink href="/auth/login">Posts</AppHeaderLink>
                             
                             {user ? (
                                 <AppHeaderUserMenu />
                             ) : (
-                                <AppHeaderLink href={'auth/login'}>Login</AppHeaderLink>
+                                <AppHeaderLink href="/auth/login">Login</AppHeaderLink>
                             )}
                         </div>
                     </nav>
