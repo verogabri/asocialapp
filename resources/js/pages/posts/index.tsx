@@ -1,5 +1,5 @@
 
-import { Link } from '@inertiajs/react';
+import { Link, InfiniteScroll } from '@inertiajs/react';
 
 import AppLayout from '../../layouts/app-layout';
 import { Post } from '../../types';
@@ -8,7 +8,9 @@ import { show } from "@/actions/App/Http/Controllers/PostController";
 import { Heart } from 'lucide-react';
 
 interface PostIndexProps {
-    posts: Post[]
+    posts: {
+        data: Post[]
+    }
 }
 
 export default function PostIndex({ posts }: PostIndexProps) {
@@ -22,10 +24,10 @@ export default function PostIndex({ posts }: PostIndexProps) {
                 </Card>;
                 
 
-    if (posts.length > 0) { 
+    if (posts.data.length > 0) { 
         content = (
-            <>
-                {posts.map((post: Post) => (
+            <InfiniteScroll data="posts">
+                {posts.data.map((post: Post) => (
                     <Card
                         key={post.id}
                         className="transition-colors hover:bg-muted/50 rounded-none border-b-0 last:border-b"
@@ -57,7 +59,7 @@ export default function PostIndex({ posts }: PostIndexProps) {
                         
                     </Card>
                 ))}
-            </>
+            </InfiniteScroll>
         );
     }
 

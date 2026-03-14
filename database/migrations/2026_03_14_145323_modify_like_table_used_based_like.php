@@ -46,8 +46,8 @@ return new class extends Migration
             $table->dropUnique(['post_id', 'user_id']);
             
             // Drop user_id foreign key and column
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropForeign(['user_id'])->nullable();
+            $table->dropColumn('user_id')->nullable();
             
             // Add back ip_address and user_agent columns
             $table->string('ip_address', 45);

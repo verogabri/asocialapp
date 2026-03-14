@@ -22,32 +22,30 @@ class PostController extends Controller
     public function index() : Response
     {
         // $posts = Post::all();
-        $posts = Post::with('user')->withCount('likes')->latest()->get();
+        // $posts = Post::with('user')->withCount('likes')->latest()->get();
+
+        // opzione fare infinite scroll nella pagina
+        // carico 10 post per volta
+        $posts = Inertia::scroll(
+                fn () => Post::with('user')
+                    ->withCount('likes')
+                    ->latest()
+                    ->cursorPaginate(10)
+                
+            );
+
        
         // nn so se è il modo migliore
         // ma funziona
         // sostituisco ogni post con un array che contiene i dati del post e i dati dell'utente che ha scritto il post, trasformati in UserResource
-        $posts = $posts->map(fn($post) => [
-            ...$post->toArray(),
-            'user' => new UserResource($post->user)
-        ]);
+        // $posts = $posts->map(fn($post) => [
+        //     ...$post->toArray(),
+        //     'user' => new UserResource($post->user)
+        // ]);
         
         return Inertia::render('posts/index', ['posts' => $posts]);
     }
 
-
-    public function show_00(string $id) : Response
-    {
-        // $post = Post::with('user')->findOrFail($id);
-        $posts = Post::with([
-            'user',
-            'commentts' => fn($query) => $query->with('user')->latest()           
-        ])->findOrFail($id);
-
-        // dd($posts);
-        return Inertia::render('posts/show', ['post' => $posts]);
-
-    }
 
 
     /**
