@@ -21,9 +21,16 @@ interface CommentFormProps {
 export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
 
     const handleOnSuccess = () => {
+        alert('Comment added successfully!');
         if(onSuccess){
             onSuccess();
         }
+    }
+
+    const handleOnError = (errors: any) => {
+        // Gestisce gli errori (es: utente non loggato)
+        const errorMessage = errors?.auth || Object.values(errors)[0] || 'An error occurred';
+        alert(errorMessage);
     }
 
 
@@ -41,6 +48,7 @@ export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
                     className="space-y-4"
                     resetOnSuccess
                     onSuccess={handleOnSuccess}
+                    onError={handleOnError}
                     options={{
                         only: ['commentts']
                     }}

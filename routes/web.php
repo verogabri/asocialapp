@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 
 
 
+
 Route::get('/', function () {
     // return view('welcome');
     return Inertia::render('home');
@@ -24,7 +25,7 @@ Route::get('/about', function () {
 Route::get('/auth/register', [RegisterController::class, 'create'])->name('auth.register.create');
 Route::post('/auth/register', [RegisterController::class, 'store'])->name('auth.register.store');
 
-Route::get('/auth/login', [LoginController::class, 'create'])->name('auth.login.create');
+Route::get('/auth/login', [LoginController::class, 'create'])->name('login');
 Route::post('/auth/login', [LoginController::class, 'store'])->name('auth.login.store');
 Route::delete('/auth/logout', [LoginController::class, 'destroy'])->name('auth.logout');
 
@@ -33,7 +34,7 @@ Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
-Route::post('/commentts', [CommenttController::class, 'store'])->name('commentts.store');
+Route::post('/commentts', [CommenttController::class, 'store'])->name('commentts.store')->middleware('auth');
 
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::post('/posts/{post}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle');

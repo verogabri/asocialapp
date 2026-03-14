@@ -12,25 +12,21 @@ class PostToggleLike extends Controller
      */
     public function __invoke(Request $request, Post $post)
     {
-        //
-        $ip = $request->ip();
-        $userAgent = $request->userAgent();
+        // Verifica se l'utente è autenticato
+        if (!$request->user()) {
+            return back()->withErrors(['auth' => 'You must be logged in to like a post.']);
+        }
+       
+        $existingLike = $post->likes()->where('user_id', $request->user()->id)->first();
 
-        $existingLike = $post->likes()->where([
-            'ip_address' => $ip, 
-            'user_agent' => $userAgent
-        ])->first();
-
-        if( $existingLike){
+        if ($existingLike) {
             // se esiste lo devo eliminare
             $existingLike->delete();
         } else {
             // va creato
             $post->likes()->create([
-                'ip_address' => $ip,
-                'user_agent' => $userAgent
+                'user_id' => $request->user()->id
             ]);
-
         }
 
         return back();

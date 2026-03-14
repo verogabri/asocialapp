@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { router } from "@inertiajs/react";
 import PostToggleLike from '@/actions/App/Http/Controllers/PostToggleLike';
-import { toast } from 'sonner';
 
 interface LikeButtonProps {
     postId: number;
@@ -39,9 +38,6 @@ export default function LikeButton({
     const disabled = isLoading || externalLoading;
 
     const handleToggleLike = () => {
-        // TODO: Implement like toggle logic
-        alert('si si like it');
-
         if (disabled) return;
 
         router.post(
@@ -49,13 +45,18 @@ export default function LikeButton({
             {},
             {
                 onStart: () => setIsLoading(true),
-                onSuccess: () => toast(liked ? "Post unliked!" : "Post liked!"),
-                onError: () => toast("Failed to update like"),
+                onSuccess: () => {
+                    alert('ok success');
+                },
+                onError: (errors) => {
+                    // Mostra alert con messaggio di errore
+                    const errorMessage = errors?.auth || Object.values(errors)[0] || 'there was an error';
+                    alert(errorMessage);
+                },
                 onFinish: () => setIsLoading(false),
-                only: ["likes"],
+                preserveScroll: true,
             }
         );
-        
     };
 
     return (

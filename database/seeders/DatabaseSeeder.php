@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Commentt;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Like;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -42,13 +43,16 @@ class DatabaseSeeder extends Seeder
             'post_id' => fn() => $posts->random()->id,
         ]);
 
-        
 
-        /*
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-        */
+        // creo un po di like a caso, ogni utente mette like a un numero random di post tra 5 e 10
+        foreach ($users as $user) {
+            $randomPosts = $posts->random(rand(5, 10));
+            foreach ($randomPosts as $post) {
+                Like::create([
+                    'user_id' => $user->id,
+                    'post_id' => $post->id,
+                ]);
+            }
+        }
     }
 }

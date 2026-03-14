@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 
 
 class PostController extends Controller
@@ -70,7 +71,8 @@ class PostController extends Controller
                 fn() => [
                     'count' => $post->likes()->count(),
                     // 'user_has_liked' => $post->likes()->where('ip_address', request()->ip())->where('user_agent', request()->userAgent())->exists()
-                    'user_has_liked' => $post->likes()->where(['ip_address' => request()->ip(), 'user_agent' => request()->userAgent()])->exists()
+                    // 'user_has_liked' => $post->likes()->where('user_id', request()->user()?->id)->exists()
+                    'user_has_liked' => Auth::check() ? $post->likes()->where('user_id', Auth::id())->exists() : false,
                 ]
             )   
         ]);

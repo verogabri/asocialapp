@@ -55,7 +55,7 @@ export default function PostShow({ post, commentts, likes }: PostShowProps) {
     }, [commentts]);
 
 
-    usePoll( 5000, {
+    usePoll( 10000, {
         only: ['commentts', 'likes']
     })
 

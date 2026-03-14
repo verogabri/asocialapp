@@ -32,6 +32,11 @@ class CommenttController extends Controller
      */
     public function store(StoreCommenttRequest $request) : RedirectResponse
     {
+
+        if( !$request->user()) {
+            return back()->withErrors(['auth' => 'You must be logged in to comment.']);
+        }
+
         //
         $validated = $request->validated();
         Commentt::create([
