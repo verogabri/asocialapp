@@ -21,7 +21,8 @@ interface CommentFormProps {
 export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
 
     const handleOnSuccess = () => {
-        alert('Comment added successfully!');
+    
+        // alert('Comment added successfully!');
         if(onSuccess){
             onSuccess();
         }
@@ -29,6 +30,7 @@ export default function CommentForm({ postId, onSuccess }: CommentFormProps) {
 
     const handleOnError = (errors: any) => {
         // Gestisce gli errori (es: utente non loggato)
+        // ma nn gestisce il caso di redirect 302
         const errorMessage = errors?.auth || Object.values(errors)[0] || 'An error occurred';
         alert(errorMessage);
     }

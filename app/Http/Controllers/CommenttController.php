@@ -33,6 +33,7 @@ class CommenttController extends Controller
     public function store(StoreCommenttRequest $request) : RedirectResponse
     {
 
+
         if( !$request->user()) {
             return back()->withErrors(['auth' => 'You must be logged in to comment.']);
         }
@@ -45,7 +46,11 @@ class CommenttController extends Controller
             'user_id' => $request->user()->id, // in questo modo prendo l'id dell'utente loggato, che è quello che ha scritto il commento
         ]);
 
+        // ritorno alla pagina precedente, con un messaggio di successo, che però non viene usato, 
+        // perché il form viene resettato e quindi non c'è una nuova richiesta GET alla pagina, ma rimaniamo sulla stessa pagina, 
+        // quindi non c'è modo di mostrare il messaggio di successo. Quindi, invece di usare un messaggio di successo, potrei restituire un messaggio di errore in caso di commento non valido, e gestire il messaggio di successo direttamente nel form, mostrando un alert o un toast al momento del successo.
         return redirect()->back();
+        
 
     }
 
