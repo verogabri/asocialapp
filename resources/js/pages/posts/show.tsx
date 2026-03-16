@@ -16,10 +16,11 @@ import LikeButton from '@/components/ui/like-button';
 interface PostShowProps {
     post: Post,
     commentts: Commentt[]; // Aggiungi questa riga per definire il tipo di commentts
-    likes: PostLikesData
+    likes: PostLikesData,
+    can_edit: boolean,
 }
 
-export default function PostShow({ post, commentts, likes }: PostShowProps) {
+export default function PostShow({ post, commentts, likes, can_edit }: PostShowProps) {
 
     const commenttsSectionRef = React.useRef<HTMLDivElement>(null);
 
@@ -90,6 +91,12 @@ export default function PostShow({ post, commentts, likes }: PostShowProps) {
                             By {post.user?.name} on{" "} 
                             {new Date(post.created_at).toLocaleDateString()}
                         </CardDescription>
+                        {can_edit && (
+                            <Button size="sm" className="ml-2">
+                                <Link href={`/posts/${post.id}/edit`} className="btn btn-primary">Edit</Link>
+                            </Button>
+                        )}
+
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-gray-700 whitespace-pre-wrap">

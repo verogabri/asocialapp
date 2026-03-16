@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Resources\UserResource;
+// use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class PostController extends Controller
@@ -59,6 +60,7 @@ class PostController extends Controller
 
         return Inertia::render('posts/show', [
             'post' => $post,
+            'can_edit' => Auth::check() && Auth::user()->can('updatePost', $post),  // uso PostPolicy per verificare se l'utente autenticato può modificare il post, in questo caso se è l'autore del post
             'commentts' => Inertia::defer(
                 fn() => Commentt::with('user')
                     ->where('post_id', $id)
@@ -79,11 +81,18 @@ class PostController extends Controller
 
     public function create() : Response
     {
+    
+        // NB: pass il model Post così Laravel sa che mi sto riferendo alla policy PostPolicy e quindi sa che deve usare quella policy 
+        Gate::authorize('createPost', Post::class); // uso PostPolicy per verificare se l'utente autenticato può creare un post
+
+
         return Inertia::render('posts/create');
     }   
 
     public function store(Request $request) : RedirectResponse
     {
+        Gate::authorize('createPost', Post::class);
+        
         $validated = $request->validate([
             'title' => 'required|string|min:3|max:255',
             'body' => 'required|string|min:5|max:1000',

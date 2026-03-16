@@ -25,7 +25,7 @@ export default function AppHeader() {
                             </Button>
                             <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
                             <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
-                            <AppHeaderLink href="/auth/login">Posts</AppHeaderLink>
+                            <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
                             
                             {user ? (
                                 <AppHeaderUserMenu />

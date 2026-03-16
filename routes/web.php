@@ -31,7 +31,7 @@ Route::delete('/auth/logout', [LoginController::class, 'destroy'])->name('auth.l
 
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
 // il middleware auth serve per proteggere le rotte che devono essere accessibili solo agli utenti autenticati, 
@@ -42,6 +42,6 @@ Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 // in modo da poter restituire un messaggio di errore più chiaro in caso di utente non autenticato.
 Route::post('/commentts', [CommenttController::class, 'store'])->name('commentts.store')->middleware('auth');
 
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::post('/posts/{post}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
+Route::post('/posts/{post}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle')->middleware('auth');
 
