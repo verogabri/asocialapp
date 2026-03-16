@@ -60,7 +60,9 @@ class PostController extends Controller
 
         return Inertia::render('posts/show', [
             'post' => $post,
-            'can_edit' => Auth::check() && Auth::user()->can('updatePost', $post),  // uso PostPolicy per verificare se l'utente autenticato può modificare il post, in questo caso se è l'autore del post
+            'can' => [
+                'update' => Auth::check() && Auth::user()->can('updatePost', $post),
+            ],
             'commentts' => Inertia::defer(
                 fn() => Commentt::with('user')
                     ->where('post_id', $id)
@@ -92,7 +94,7 @@ class PostController extends Controller
     public function store(Request $request) : RedirectResponse
     {
         Gate::authorize('createPost', Post::class);
-        
+
         $validated = $request->validate([
             'title' => 'required|string|min:3|max:255',
             'body' => 'required|string|min:5|max:1000',

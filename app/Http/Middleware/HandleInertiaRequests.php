@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+
 
 class HandleInertiaRequests extends Middleware
 {
@@ -42,7 +45,17 @@ class HandleInertiaRequests extends Middleware
             // 'user' => $request->user(),
 
             // invece di user, uso quelli di user trasformati in UserResource, in questo modo posso decidere quali campi del user voglio condividere con il client
-            'user' => $request->user()?->toResource(),
+            // 'user' => $request->user()?->toResource(),
+
+            // per evitare conflitto di naming, metto tutto in un array 'auth', in questo modo posso accedere a user e can da auth.user e auth.can
+            'auth' => [
+                'user' => $request->user()?->toResource(),
+                'can' => [
+                    'post' => [
+                        'createPost' => Auth::check() && $request->user()->can('createPost', Post::class),
+                    ],
+                ],
+            ],
         ];
     }
 }

@@ -17,10 +17,12 @@ interface PostShowProps {
     post: Post,
     commentts: Commentt[]; // Aggiungi questa riga per definire il tipo di commentts
     likes: PostLikesData,
-    can_edit: boolean,
+    can: {
+        update: boolean;
+    };
 }
 
-export default function PostShow({ post, commentts, likes, can_edit }: PostShowProps) {
+export default function PostShow({ post, commentts, likes, can }: PostShowProps) {
 
     const commenttsSectionRef = React.useRef<HTMLDivElement>(null);
 
@@ -91,7 +93,7 @@ export default function PostShow({ post, commentts, likes, can_edit }: PostShowP
                             By {post.user?.name} on{" "} 
                             {new Date(post.created_at).toLocaleDateString()}
                         </CardDescription>
-                        {can_edit && (
+                        {can.update && (
                             <Button size="sm" className="ml-2">
                                 <Link href={`/posts/${post.id}/edit`} className="btn btn-primary">Edit</Link>
                             </Button>

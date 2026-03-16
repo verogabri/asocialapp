@@ -12,7 +12,8 @@ import AppHeaderUserMenu from "./app-headerUserMenu";
 
 export default function AppHeader() {
 
-    const { user } = usePage<PageProps>().props;
+    const { auth } = usePage<PageProps>().props;
+
     return (
         <header>
             <div className="max-w-4xl mx-auto px-4 py-4">
@@ -20,14 +21,18 @@ export default function AppHeader() {
                     <AppHeaderLogo />
                     <nav>
                         <div className="flex space-x-6 items-center">                            
-                            <Button size="sm" >
-                                <Link href={create()} className="btn btn-primary">New Post</Link>
-                            </Button>
+                            
+                            {auth.can.post.createPost && (
+                                <Button size="sm" >
+                                    <Link href={create()} className="btn btn-primary">New Post</Link>
+                                </Button>
+                            )}
+
                             <AppHeaderLink href={home.index().url}>Home</AppHeaderLink>
                             <AppHeaderLink href={about.index().url}>About</AppHeaderLink>
                             <AppHeaderLink href={index().url}>Posts</AppHeaderLink>
                             
-                            {user ? (
+                            {auth.user ? (
                                 <AppHeaderUserMenu />
                             ) : (
                                 <AppHeaderLink href="/auth/login">Login</AppHeaderLink>
