@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        
         return [
             ...parent::share($request),
             //
@@ -54,6 +55,10 @@ class HandleInertiaRequests extends Middleware
                     'post' => [
                         'createPost' => Auth::check() && $request->user()->can('createPost', Post::class),
                     ],
+                ],
+                'flash' => [
+                    'success' => $request->session()->get('success'),
+                    'error' => $request->session()->get('error'),
                 ],
             ],
         ];

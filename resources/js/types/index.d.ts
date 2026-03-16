@@ -42,4 +42,9 @@ export interface PostLikesData {
 export interface PageProps {
     user: User | null;
     [key: string]: any;
+    flash?: {
+        success?: string | undefined;
+        error?: string | undefined;
+    };
+   
 }

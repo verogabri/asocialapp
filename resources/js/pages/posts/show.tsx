@@ -11,6 +11,7 @@ import CommenttList from '@/components/commentt/commentt-list';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import LikeButton from '@/components/ui/like-button';
+import PostDropActionMenu from '@/components/post/post-drop-action-menu';
 
 
 interface PostShowProps {
@@ -19,6 +20,7 @@ interface PostShowProps {
     likes: PostLikesData,
     can: {
         update: boolean;
+        delete: boolean;
     };
 }
 
@@ -88,16 +90,19 @@ export default function PostShow({ post, commentts, likes, can }: PostShowProps)
                 {/* Post Content */}
                 <Card className="rounded-none">
                     <CardHeader>
-                        <CardTitle className="text-2xl">{post.title}</CardTitle>
-                        <CardDescription>
-                            By {post.user?.name} on{" "} 
-                            {new Date(post.created_at).toLocaleDateString()}
-                        </CardDescription>
-                        {can.update && (
-                            <Button size="sm" className="ml-2">
-                                <Link href={`/posts/${post.id}/edit`} className="btn btn-primary">Edit</Link>
-                            </Button>
-                        )}
+                        <div className="flex items-start justify-between">
+                            <div>
+                                <CardTitle className="text-2xl">{post.title}</CardTitle>
+                                <CardDescription>
+                                    By {post.user?.name} on{" "} 
+                                    {new Date(post.created_at).toLocaleDateString()}
+                                </CardDescription>
+                                
+                            </div>
+                            
+                            <PostDropActionMenu postId={post.id} canUpdate={can.update} canDelete={can.delete} />
+
+                        </div>
 
                     </CardHeader>
                     <CardContent className="space-y-4">

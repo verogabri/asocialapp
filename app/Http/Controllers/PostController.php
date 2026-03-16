@@ -62,6 +62,7 @@ class PostController extends Controller
             'post' => $post,
             'can' => [
                 'update' => Auth::check() && Auth::user()->can('updatePost', $post),
+                'delete' => Auth::check() && Auth::user()->can('deletePost', $post),
             ],
             'commentts' => Inertia::defer(
                 fn() => Commentt::with('user')
@@ -103,9 +104,9 @@ class PostController extends Controller
 
         $post->update($validated);
 
-        return redirect()->route('posts.show', ['id' => $id]);
+        return redirect()->route('posts.show', ['id' => $id])->with('success', 'Post updated successfully');
     }
-    
+
 
     public function create() : Response
     {
@@ -114,7 +115,7 @@ class PostController extends Controller
         Gate::authorize('createPost', Post::class); // uso PostPolicy per verificare se l'utente autenticato può creare un post
 
 
-        return Inertia::render('posts/create');
+        return Inertia::render('posts/create')->with('success', 'Post created successfully');
     }   
 
     public function store(Request $request) : RedirectResponse
@@ -133,6 +134,18 @@ class PostController extends Controller
             'user_id' => $request->user()->id // in questo modo prendo l'id dell'utente loggato, che è quello che ha scritto il post
         ]);
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('success', 'Post created successfully'); // con with() posso passare un messaggio di successo alla pagina di destinazione, che poi posso mostrare con un toast o qualcosa del genere
+        // return redirect('posts.index')->with('success', 'Post created successfully'); // con with() posso passare un messaggio di successo alla pagina di destinazione, che poi posso mostrare con un toast o qualcosa del genere
+    }
+
+    public function destroy(string $id) : RedirectResponse
+    {
+        $post = Post::findOrFail($id);
+
+        Gate::authorize('deletePost', $post);
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }
 }

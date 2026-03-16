@@ -7,7 +7,7 @@ import { create, index } from "@/actions/App/Http/Controllers/PostController";
 import home from "@/routes/home";
 import about from "@/routes/about";
 import { PageProps } from "@/types";
-import AppHeaderUserMenu from "./app-headerUserMenu";
+import AppHeaderUserMenu from "./app-header-user-menu";
 
 
 export default function AppHeader() {
