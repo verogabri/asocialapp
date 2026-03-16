@@ -33,6 +33,7 @@ Route::delete('/auth/logout', [LoginController::class, 'destroy'])->name('auth.l
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit')->middleware('auth');
 
 // il middleware auth serve per proteggere le rotte che devono essere accessibili solo agli utenti autenticati, 
 // in questo caso la rotta per creare un post e per commentare un post
@@ -44,4 +45,8 @@ Route::post('/commentts', [CommenttController::class, 'store'])->name('commentts
 
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
 Route::post('/posts/{post}/like/toggle', [PostToggleLike::class, '__invoke'])->name('posts.like-toggle')->middleware('auth');
+
+Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update')->middleware('auth');
+
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
 

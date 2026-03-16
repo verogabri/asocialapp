@@ -81,6 +81,32 @@ class PostController extends Controller
     }
 
 
+    public function edit(string $id) : Response
+    {
+        $post = Post::findOrFail($id);
+
+        Gate::authorize('updatePost', $post); // uso PostPolicy per verificare se l'utente autenticato può modificare il post
+
+        return Inertia::render('posts/edit', ['post' => $post]);
+    }
+
+    public function update(Request $request, string $id) : RedirectResponse
+    {
+        $post = Post::findOrFail($id);
+
+        Gate::authorize('updatePost', $post);
+
+        $validated = $request->validate([
+            'title' => 'required|string|min:3|max:255',
+            'body' => 'required|string|min:5|max:1000',
+        ]);
+
+        $post->update($validated);
+
+        return redirect()->route('posts.show', ['id' => $id]);
+    }
+    
+
     public function create() : Response
     {
     
